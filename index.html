@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mama Pili’s Kitchen: Menu, Pickup and Delivery</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <h1>Mama Pili’s Kitchen</h1>
+      <p>Home-style Kenyan food, cooked fresh for pickup or delivery.</p>
+      <p class="hours">Open every day, 10:00 am to 9:00 pm</p>
+    </div>
+  </header>
+
+  <main class="wrap layout">
+
+    <!-- The menu is built by script.js from the list at the top of that file -->
+    <section id="menu" aria-label="Menu"></section>
+
+    <aside id="order" class="order" aria-label="Your order">
+      <h2>Your order</h2>
+
+      <fieldset class="type">
+        <legend>How do you want it?</legend>
+        <label><input type="radio" name="type" value="Pickup" checked> Pickup</label>
+        <label><input type="radio" name="type" value="Delivery"> Delivery</label>
+      </fieldset>
+
+      <ul id="cart-items"></ul>
+
+      <p id="fee-note" hidden>A delivery fee of Sh. 150 is included in the total.</p>
+      <p class="total">Total: <strong id="total">Sh. 0</strong></p>
+
+      <label>Your name
+        <input id="name" type="text" autocomplete="name">
+      </label>
+      <label>Phone number
+        <input id="phone" type="tel" autocomplete="tel">
+      </label>
+      <label id="address-row" hidden>Delivery address
+        <input id="address" type="text" autocomplete="street-address">
+      </label>
+
+      <button id="send" type="button">Send order on WhatsApp</button>
+      <p id="message" role="status"></p>
+    </aside>
+
+  </main>
+
+  <footer class="wrap">
+    <p>Pickup point: Kenyatta Avenue, Eldoret. Delivery within 5 km.</p>
+  </footer>
+
+  <!-- Shows on phones only, so people can jump to their order -->
+  <a href="#order" class="cart-bar" id="cart-bar">View order: Sh. 0</a>
+
+  <script src="script.js"></script>
+</body>
+</html>
