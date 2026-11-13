@@ -7,38 +7,74 @@ const menu = [
   {
     section: "Mains",
     items: [
-      { id: "m1", name: "Pilau with kachumbari", desc: "Spiced rice with beef, and a fresh tomato and onion salad.", price: 450 },
-      { id: "m2", name: "Chicken stew with chapati", desc: "Slow-cooked chicken in a rich tomato gravy, with two soft chapatis.", price: 500 },
-      { id: "m3", name: "Ugali with beef stew", desc: "Firm ugali with tender beef in its own broth.", price: 450 },
-      { id: "m4", name: "Fried tilapia with ugali", desc: "Whole tilapia, fried crisp, served with ugali and kachumbari.", price: 700 }
+      { id: "m1", name: "Pilau with kachumbari", desc: "Spiced rice with beef, and a fresh tomato and onion salad.", price: 450, img: "images/pilau.jpg.jpg" },
+      { id: "m2", name: "Chicken stew with chapati", desc: "Slow-cooked chicken in a rich tomato gravy, with two soft chapatis.", price: 500, img: "images/chicken-stew.jpg.jpg" },
+      { id: "m3", name: "Ugali with beef stew", desc: "Firm ugali with tender beef in its own broth.", price: 450, img: "images/ugali.jpg.jpg" },
+      { id: "m4", name: "Fried tilapia with ugali", desc: "Whole tilapia, fried crisp, served with ugali and kachumbari.", price: 700, img: "images/tilapia.jpg.jpg" }
     ]
   },
   {
     section: "Sides",
     items: [
-      { id: "s1", name: "Chapati (2 pieces)", desc: "Soft, layered and hot off the pan.", price: 100 },
-      { id: "s2", name: "Sukuma wiki", desc: "Collard greens sautéed with onion and tomato.", price: 120 },
-      { id: "s3", name: "Chips", desc: "Hand-cut potato chips.", price: 200 }
+      { id: "s1", name: "Chapati (2 pieces)", desc: "Soft, layered and hot off the pan.", price: 100, img: "images/chapati.jpg.jpeg" },
+      { id: "s2", name: "Sukuma wiki", desc: "Collard greens sautéed with onion and tomato.", price: 120, img: "images/sukuma-wiki.jpg.jpg" },
+      { id: "s3", name: "Chips", desc: "Hand-cut potato chips.", price: 200, img: "images/chips.jpg.jpg" }
     ]
   },
   {
     section: "Drinks",
     items: [
-      { id: "d1", name: "Fresh passion juice", desc: "Pressed to order, 400 ml.", price: 150 },
-      { id: "d2", name: "Soda", desc: "300 ml bottle.", price: 80 },
-      { id: "d3", name: "Spiced tea (chai)", desc: "Made with milk, ginger and cardamom.", price: 80 }
+      { id: "d1", name: "Fresh passion juice", desc: "Pressed to order, 400 ml.", price: 150, img: "images/passion-juice.jpg.jpg" },
+      { id: "d2", name: "Soda", desc: "300 ml bottle.", price: 80, img: "images/soda.jpg.jpg" },
+      { id: "d3", name: "Spiced tea (chai)", desc: "Made with milk, ginger and cardamom.", price: 80, img: "images/chai.jpg.jpg" },
+      { id: "d4", name: "Bottled water", desc: "500 ml bottle.", price: 50, img: "images/water.jpg" }
+    ]
+  },
+  {
+    section: "Desserts",
+    items: [
+      { id: "de1", name: "Rice pudding", desc: "Creamy rice cooked with milk and sugar.", price: 150, img: "images/rice-pudding.jpg" },
+      { id: "de2", name: "Fruit salad", desc: "A mix of seasonal fruits with a honey dressing.", price: 200, img: "images/fruit- salad.jpg" },
+      { id: "de3", name: "Cookies", desc: "Soft and chewy, with a hint of coconut.", price: 100, img: "images/cookies.jpg" },
+      { id: "de4", name: "Chocolate cake", desc: "Rich and moist chocolate cake with a ganache topping.", price: 250, img: "images/chocolate.jpg" },
+      { id: "de5", name: "Mango sorbet", desc: "Refreshing mango sorbet made from ripe mangoes.", price: 180, img: "images/mango- sorbet.jpg" }
     ]
   }
 ];
 
+// ===== Helpers =====
 // ===== Helpers =====
 const money = (n) => "Sh. " + n.toLocaleString("en-KE");
 const allItems = menu.flatMap((group) => group.items);
 const findItem = (id) => allItems.find((item) => item.id === id);
 const isDelivery = () => document.querySelector('input[name="type"]:checked').value === "Delivery";
 
+// Reads the saved cart from the browser, so it survives a page refresh
+function loadCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("cart"));
+    const clean = {};
+    for (const id in saved) {
+      if (findItem(id) && Number.isInteger(saved[id]) && saved[id] > 0) {
+        clean[id] = saved[id];
+      }
+    }
+    return clean;
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveCart() {
+  try {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  } catch (error) {
+    // storage is blocked, the cart just won't be remembered
+  }
+}
+
 // The cart stores how many of each dish: { m1: 2, d1: 1 } means 2 of m1 and 1 of d1
-let cart = {};
+let cart = loadCart();
 
 function cartTotal() {
   let total = 0;
@@ -57,23 +93,37 @@ function showMessage(text) {
 
 // ===== Draw the menu on the page =====
 function renderMenu() {
-  const html = menu.map((group) => `
-    <h2>${group.section}</h2>
-    ${group.items.map((item) => `
-      <article class="item">
-        <div>
-          <h3>${item.name}</h3>
-          <p>${item.desc}</p>
-        </div>
-        <div class="buy">
-          <span class="price">${money(item.price)}</span>
-          <button class="add" data-id="${item.id}" aria-label="Add ${item.name} to your order">Add</button>
-        </div>
-      </article>
-    `).join("")}
+  const names = ["All", ...menu.map((group) => group.section)];
+  const filtersHtml = `
+    <div class="filters">
+      ${names.map((name) => `
+        <button type="button" data-filter="${name}" aria-pressed="${name === "All"}"
+          class="${name === "All" ? "active" : ""}">${name}</button>
+      `).join("")}
+    </div>`;
+
+  const groupsHtml = menu.map((group) => `
+    <div class="group" data-section="${group.section}">
+      <h2>${group.section}</h2>
+      ${group.items.map((item) => `
+        <article class="item">
+          <img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.style.display='none'">
+          <div class="info">
+            <h3>${item.name}</h3>
+            <p>${item.desc}</p>
+          </div>
+          <div class="buy">
+            <span class="price">${money(item.price)}</span>
+            <button class="add" data-id="${item.id}" aria-label="Add ${item.name} to your order">Add</button>
+          </div>
+        </article>
+      `).join("")}
+    </div>
   `).join("");
-  document.getElementById("menu").innerHTML = html;
+
+  document.getElementById("menu").innerHTML = filtersHtml + groupsHtml;
 }
+
 
 // ===== Draw the cart and total =====
 function renderCart() {
@@ -110,26 +160,41 @@ function changeQty(id, change) {
   if (cart[id] <= 0) {
     delete cart[id];
   }
+  saveCart();
   renderCart();
 }
 
 // ===== Clicks =====
 document.getElementById("menu").addEventListener("click", (event) => {
-  const button = event.target.closest("[data-id]");
-  if (button) {
-    changeQty(button.dataset.id, 1);
+  const filterButton = event.target.closest("[data-filter]");
+  if (filterButton) {
+    const choice = filterButton.dataset.filter;
+    document.querySelectorAll(".group").forEach((group) => {
+      group.hidden = !(choice === "All" || group.dataset.section === choice);
+    });
+    document.querySelectorAll(".filters button").forEach((button) => {
+      button.classList.toggle("active", button === filterButton);
+      button.setAttribute("aria-pressed", button === filterButton);
+    });
+    return;
+  }
+
+  const addButton = event.target.closest(".add[data-id]");
+  if (addButton) {
+    changeQty(addButton.dataset.id, 1);
+    showMessage("");
   }
 });
 
 document.getElementById("cart-items").addEventListener("click", (event) => {
-  const button = event.target.closest("[data-change]");
+  const button = event.target.closest("button[data-id][data-change]");
   if (button) {
     changeQty(button.dataset.id, Number(button.dataset.change));
   }
 });
 
-document.querySelectorAll('input[name="type"]').forEach((radio) => {
-  radio.addEventListener("change", () => {
+document.querySelectorAll('input[name="type"]').forEach((input) => {
+  input.addEventListener("change", () => {
     document.getElementById("address-row").hidden = !isDelivery();
     renderCart();
   });
@@ -159,6 +224,8 @@ document.getElementById("send").addEventListener("click", () => {
     return `${cart[id]} × ${item.name} (${money(item.price * cart[id])})`;
   });
 
+    const notes = document.getElementById("notes").value.trim();
+
   const text = [
     `New order from ${name} (${phone})`,
     `Type: ${isDelivery() ? "Delivery" : "Pickup"}`,
@@ -166,13 +233,27 @@ document.getElementById("send").addEventListener("click", () => {
     "",
     ...lines,
     ...(isDelivery() ? [`Delivery fee: ${money(DELIVERY_FEE)}`] : []),
-    `Total: ${money(cartTotal())}`
+    `Total: ${money(cartTotal())}`,
+    ...(notes ? ["", `Notes: ${notes}`] : [])
   ].join("\n");
 
   showMessage("");
   window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text), "_blank");
 });
 
+const OPEN_HOUR = 10;   // 10:00 am
+const CLOSE_HOUR = 21;  // 9:00 pm
+
+function updateOpenStatus() {
+  const hour = new Date().getHours();
+  const open = hour >= OPEN_HOUR && hour < CLOSE_HOUR;
+  const badge = document.getElementById("open-status");
+  badge.textContent = open ? "Open now" : "Closed. We open at 10:00 am.";
+  badge.className = "status " + (open ? "open" : "closed");
+}
+
 // ===== Start =====
 renderMenu();
 renderCart();
+updateOpenStatus();
+setInterval(updateOpenStatus, 60000);

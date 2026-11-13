@@ -1,13 +1,13 @@
 /* ===== Colours and fonts: change these first and watch the page update ===== */
 :root {
-  --ink: #1b2a22;
-  --leaf: #1f6b45;
-  --leaf-dark: #17523a;
-  --sun: #f2b632;
-  --sun-dark: #dca21f;
-  --paper: #f6f7f2;
-  --line: #d5dccf;
-  --muted: #55645a;
+   --ink: #1d1d1f;
+  --leaf: #b3261e;
+  --leaf-dark: #7f1d17;
+  --sun: #f5c542;
+  --sun-dark: #e0ad22;
+  --paper: #f7f6f3;
+  --line: #dddad3;
+  --muted: #5d5a54;
   --display: Georgia, "Times New Roman", serif;
   --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
@@ -68,10 +68,18 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.2; }
   padding: 0.9rem 0;
   border-bottom: 1px solid var(--line);
 }
+.item > img {
+  width: 5rem;
+  height: 5rem;
+  flex: 0 0 5rem;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.item .info { flex: 1; min-width: 0; }
 .item h3 { margin: 0; font-size: 1.1rem; }
 .item p { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.92rem; max-width: 30rem; }
 
-.buy { display: flex; align-items: center; gap: 0.75rem; }
+.buy { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; }
 .price { font-weight: 700; white-space: nowrap; }
 
 button { font: inherit; cursor: pointer; border: 0; border-radius: 6px; }
@@ -173,3 +181,44 @@ footer { padding-bottom: 1.5rem; color: var(--muted); font-size: 0.92rem; }
   .order { position: sticky; top: 1rem; }
   .cart-bar { display: none; }
 }
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.filters button {
+  padding: 0.45rem 1rem;
+  background: #fff;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  font-weight: 600;
+}
+.filters button.active { background: var(--ink); color: var(--paper); }
+.order textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.6rem;
+  font: inherit;
+  border: 1px solid var(--muted);
+  border-radius: 6px;
+  resize: vertical;
+} 
+.status {
+  display: inline-block;
+  margin: 0.5rem 0 0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.status.open { background: var(--sun); color: var(--ink); }
+.status.closed { background: #fff; color: #8a1f17; }
+.nav { display: flex; gap: 1.25rem; margin-bottom: 1.25rem; }
+.nav a {
+  color: var(--paper);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+}
+.nav a:hover,
+.nav a[aria-current="page"] { border-bottom-color: var(--sun); }
+
+.page { display: block; max-width: 40rem; padding-top: 1.5rem; padding-bottom: 2rem; }
+.page h2 { margin: 1.5rem 0 0.25rem; }

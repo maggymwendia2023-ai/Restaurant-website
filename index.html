@@ -10,6 +10,11 @@
 
   <header class="hero">
     <div class="wrap">
+      <nav class="nav" aria-label="Main">
+  <a href="index.html" aria-current="page">Menu</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</nav>
       <h1>Mama Pili’s Kitchen</h1>
       <p>Home-style Kenyan food, cooked fresh for pickup or delivery.</p>
       <p class="hours">Open every day, 10:00 am to 9:00 pm</p>
@@ -34,6 +39,7 @@
 
       <p id="fee-note" hidden>A delivery fee of Sh. 150 is included in the total.</p>
       <p class="total">Total: <strong id="total">Sh. 0</strong></p>
+      <p id="open-status" class="status"></p>
 
       <label>Your name
         <input id="name" type="text" autocomplete="name">
@@ -45,6 +51,9 @@
         <input id="address" type="text" autocomplete="street-address">
       </label>
 
+      <label>Special instructions (optional)
+  <textarea id="notes" rows="3" placeholder="For example: no onions, extra chilli"></textarea>
+</label>
       <button id="send" type="button">Send order on WhatsApp</button>
       <p id="message" role="status"></p>
     </aside>
