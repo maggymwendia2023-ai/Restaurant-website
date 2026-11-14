@@ -3,25 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>About: Mama Pili’s Kitchen</title>
+  <meta name="theme-color" content="#263b30">
+  <title>Our Story | Mama Pili’s Kitchen</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="hero">
-    <div class="wrap">
-      <nav class="nav" aria-label="Main">
-        <a href="index.html">Menu</a>
-        <a href="about.html" aria-current="page">About</a>
-        <a href="contact.html">Contact</a>
+  <div class="nav-shell">
+    <div class="wrap nav-wrap">
+      <a class="brand" href="index.html#home" aria-label="Mama Pili's Kitchen home"><span class="brand-mark" aria-hidden="true">MP</span><span>Mama Pili’s <strong>Kitchen</strong></span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button>
+      <nav class="nav" id="main-nav" aria-label="Main navigation">
+        <a href="index.html#home">Home</a><a href="index.html#about" aria-current="page">About Us</a><a href="index.html#menu">Our Menu</a><a href="index.html#offers">Special Offers</a><a href="index.html#contact">Contact</a><a class="nav-order" href="index.html#order">Order Now <span aria-hidden="true">↗</span></a>
       </nav>
-      <h1>About us</h1>
     </div>
+  </div>
+  <header class="subpage-header">
+    <div class="wrap subpage-title"><p class="eyebrow">A little about us</p><h1>Made with love,<br>served with passion.</h1></div>
   </header>
-  <main class="wrap page">
-    <h2>Our story</h2>
-    <p>Write two or three sentences about the restaurant: who started it, when, and why.</p>
-    <h2>What we cook</h2>
-    <p>Describe the food and where the ingredients come from.</p>
+  <main>
+    <section class="section story-section">
+      <div class="wrap story-grid">
+        <div class="story-photo"><img src="images/chicken-stew.jpg.jpg" alt="Home-style chicken stew, freshly prepared"></div>
+        <div class="story-copy">
+          <p class="eyebrow eyebrow-dark">Our story</p>
+          <h2>Our Story – Made with Love, Served with Passion</h2>
+          <p>At Mama Pili's Kitchen, we believe that good food brings people together. Our passion comes from the joy of preparing delicious meals that make every customer feel at home.</p>
+          <p>Inspired by the richness of Kenyan food culture and the comfort of homemade cooking, Mama Pili's Kitchen is all about serving satisfying meals made with care, quality ingredients and a passion for great taste.</p>
+          <p>Whether you are stopping by for a quick meal, ordering lunch or sharing food with family and friends, we want every experience to feel special.</p>
+          <p>Our goal is simple: to serve delicious food, make our customers happy and bring people together, one meal at a time.</p>
+          <a class="button button-dark" href="index.html#menu">Explore our menu <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+    <section class="about-food section">
+      <div class="wrap section-heading centered">
+        <p class="eyebrow eyebrow-dark">From our kitchen to your table</p><h2>Good Food, Great Taste!</h2>
+        <p>Enjoy Kenyan-inspired meals, freshly prepared dishes, satisfying lunch options and favourites for sharing.</p>
+        <a class="button button-primary" href="index.html#order">Order Now <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
   </main>
+  <footer class="site-footer"><div class="wrap footer-inner"><a class="brand footer-brand" href="index.html#home"><span class="brand-mark" aria-hidden="true">MP</span><span>Mama Pili’s <strong>Kitchen</strong></span></a><p>Home-style Kenyan food, cooked fresh for pickup or delivery.</p><p class="copyright">© Mama Pili’s Kitchen · Kenyatta Avenue, Eldoret</p></div></footer>
+  <script src="script.js"></script>
 </body>
 </html>

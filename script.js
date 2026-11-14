@@ -164,83 +164,6 @@ function changeQty(id, change) {
   renderCart();
 }
 
-// ===== Clicks =====
-document.getElementById("menu").addEventListener("click", (event) => {
-  const filterButton = event.target.closest("[data-filter]");
-  if (filterButton) {
-    const choice = filterButton.dataset.filter;
-    document.querySelectorAll(".group").forEach((group) => {
-      group.hidden = !(choice === "All" || group.dataset.section === choice);
-    });
-    document.querySelectorAll(".filters button").forEach((button) => {
-      button.classList.toggle("active", button === filterButton);
-      button.setAttribute("aria-pressed", button === filterButton);
-    });
-    return;
-  }
-
-  const addButton = event.target.closest(".add[data-id]");
-  if (addButton) {
-    changeQty(addButton.dataset.id, 1);
-    showMessage("");
-  }
-});
-
-document.getElementById("cart-items").addEventListener("click", (event) => {
-  const button = event.target.closest("button[data-id][data-change]");
-  if (button) {
-    changeQty(button.dataset.id, Number(button.dataset.change));
-  }
-});
-
-document.querySelectorAll('input[name="type"]').forEach((input) => {
-  input.addEventListener("change", () => {
-    document.getElementById("address-row").hidden = !isDelivery();
-    renderCart();
-  });
-});
-
-// ===== Send the order to the restaurant on WhatsApp =====
-document.getElementById("send").addEventListener("click", () => {
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const address = document.getElementById("address").value.trim();
-
-  if (Object.keys(cart).length === 0) {
-    showMessage("Add at least one dish to your order.");
-    return;
-  }
-  if (name === "" || phone === "") {
-    showMessage("Enter your name and phone number.");
-    return;
-  }
-  if (isDelivery() && address === "") {
-    showMessage("Enter your delivery address.");
-    return;
-  }
-
-  const lines = Object.keys(cart).map((id) => {
-    const item = findItem(id);
-    return `${cart[id]} × ${item.name} (${money(item.price * cart[id])})`;
-  });
-
-    const notes = document.getElementById("notes").value.trim();
-
-  const text = [
-    `New order from ${name} (${phone})`,
-    `Type: ${isDelivery() ? "Delivery" : "Pickup"}`,
-    ...(isDelivery() ? [`Address: ${address}`] : []),
-    "",
-    ...lines,
-    ...(isDelivery() ? [`Delivery fee: ${money(DELIVERY_FEE)}`] : []),
-    `Total: ${money(cartTotal())}`,
-    ...(notes ? ["", `Notes: ${notes}`] : [])
-  ].join("\n");
-
-  showMessage("");
-  window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text), "_blank");
-});
-
 const OPEN_HOUR = 10;   // 10:00 am
 const CLOSE_HOUR = 21;  // 9:00 pm
 
@@ -250,10 +173,123 @@ function updateOpenStatus() {
   const badge = document.getElementById("open-status");
   badge.textContent = open ? "Open now" : "Closed. We open at 10:00 am.";
   badge.className = "status " + (open ? "open" : "closed");
+  const contactStatus = document.getElementById("contact-open-status");
+  if (contactStatus) {
+    contactStatus.textContent = open ? "Currently open" : "Currently closed";
+  }
 }
 
-// ===== Start =====
-renderMenu();
-renderCart();
-updateOpenStatus();
-setInterval(updateOpenStatus, 60000);
+// ===== Start the ordering system only on pages that contain it =====
+if (document.getElementById("menu") && document.getElementById("cart-items")) {
+  document.getElementById("menu").addEventListener("click", (event) => {
+    const filterButton = event.target.closest("[data-filter]");
+    if (filterButton) {
+      const choice = filterButton.dataset.filter;
+      document.querySelectorAll(".group").forEach((group) => {
+        group.hidden = !(choice === "All" || group.dataset.section === choice);
+      });
+      document.querySelectorAll(".filters button").forEach((button) => {
+        button.classList.toggle("active", button === filterButton);
+        button.setAttribute("aria-pressed", button === filterButton);
+      });
+      return;
+    }
+
+    const addButton = event.target.closest(".add[data-id]");
+    if (addButton) {
+      changeQty(addButton.dataset.id, 1);
+      showMessage("");
+    }
+  });
+
+  document.getElementById("cart-items").addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-id][data-change]");
+    if (button) {
+      changeQty(button.dataset.id, Number(button.dataset.change));
+    }
+  });
+
+  document.querySelectorAll('input[name="type"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      document.getElementById("address-row").hidden = !isDelivery();
+      renderCart();
+    });
+  });
+
+  document.getElementById("send").addEventListener("click", () => {
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
+
+    if (Object.keys(cart).length === 0) {
+      showMessage("Add at least one dish to your order.");
+      return;
+    }
+    if (name === "" || phone === "") {
+      showMessage("Enter your name and phone number.");
+      return;
+    }
+    if (isDelivery() && address === "") {
+      showMessage("Enter your delivery address.");
+      return;
+    }
+
+    const lines = Object.keys(cart).map((id) => {
+      const item = findItem(id);
+      return `${cart[id]} × ${item.name} (${money(item.price * cart[id])})`;
+    });
+    const notes = document.getElementById("notes").value.trim();
+    const text = [
+      `New order from ${name} (${phone})`,
+      `Type: ${isDelivery() ? "Delivery" : "Pickup"}`,
+      ...(isDelivery() ? [`Address: ${address}`] : []),
+      "",
+      ...lines,
+      ...(isDelivery() ? [`Delivery fee: ${money(DELIVERY_FEE)}`] : []),
+      `Total: ${money(cartTotal())}`,
+      ...(notes ? ["", `Notes: ${notes}`] : [])
+    ].join("\n");
+
+    showMessage("");
+    window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text), "_blank");
+  });
+
+  renderMenu();
+  renderCart();
+  updateOpenStatus();
+  setInterval(updateOpenStatus, 60000);
+}
+
+// ===== Shared navigation and lightweight section reveals =====
+const navToggle = document.querySelector(".nav-toggle");
+const nav = document.getElementById("main-nav");
+if (navToggle && nav) {
+  navToggle.addEventListener("click", () => {
+    const expanded = navToggle.getAttribute("aria-expanded") === "true";
+    navToggle.setAttribute("aria-expanded", String(!expanded));
+    navToggle.setAttribute("aria-label", expanded ? "Open navigation" : "Close navigation");
+    nav.classList.toggle("open", !expanded);
+  });
+  nav.addEventListener("click", (event) => {
+    if (event.target.closest("a")) {
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open navigation");
+      nav.classList.remove("open");
+    }
+  });
+}
+
+const revealElements = document.querySelectorAll(".reveal");
+if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+  revealElements.forEach((element) => element.classList.add("is-visible"));
+} else {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealElements.forEach((element) => revealObserver.observe(element));
+}

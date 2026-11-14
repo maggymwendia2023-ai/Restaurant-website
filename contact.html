@@ -3,29 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>About: Mama Pili’s Kitchen</title>
+  <meta name="theme-color" content="#263b30">
+  <title>Contact Us | Mama Pili’s Kitchen</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="hero">
-    <div class="wrap">
-      <nav class="nav" aria-label="Main">
-        <a href="index.html">Menu</a>
-        <a href="about.html" aria-current="page">About</a>
-        <a href="contact.html">Contact</a>
+  <div class="nav-shell">
+    <div class="wrap nav-wrap">
+      <a class="brand" href="index.html#home" aria-label="Mama Pili's Kitchen home"><span class="brand-mark" aria-hidden="true">MP</span><span>Mama Pili’s <strong>Kitchen</strong></span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button>
+      <nav class="nav" id="main-nav" aria-label="Main navigation">
+        <a href="index.html#home">Home</a><a href="index.html#about">About Us</a><a href="index.html#menu">Our Menu</a><a href="index.html#offers">Special Offers</a><a href="index.html#contact" aria-current="page">Contact</a><a class="nav-order" href="index.html#order">Order Now <span aria-hidden="true">↗</span></a>
       </nav>
-      <h1>About us</h1>
     </div>
+  </div>
+  <header class="subpage-header">
+    <div class="wrap subpage-title"><p class="eyebrow">We’re just a message away</p><h1>Let's make your<br>next meal special.</h1></div>
   </header>
-  <main class="wrap page">
-  <h2>Order and enquiries</h2>
-  <p>Phone: <a href="tel:+254757805430">0757805430</a></p>
-  <p>WhatsApp: <a href="https://wa.me/254757805430">Message us</a></p>
-
-  <h2>Find us</h2>
-  <p>Kenyatta Avenue, Eldoret</p>
-  <p><a href="https://www.google.com/maps/search/?api=1&query=12+Example+Street+Nairobi">Open in Google Maps</a></p>
-
-  <h2>Opening hours</h2>
-  <p>Every day, 10:00 am to 9:00 pm</p>
-</main>
+  <main>
+    <section class="contact-section section">
+      <div class="wrap contact-grid">
+        <div class="contact-copy">
+          <p class="eyebrow">Come hungry, leave happy</p>
+          <h2>We would love to serve you!</h2>
+          <p>Get in touch with Mama Pili's Kitchen today and let us make your next meal special.</p>
+          <div class="contact-links">
+            <a href="tel:+254757805430"><span class="contact-icon" aria-hidden="true">☎</span><span><small>Call us</small><strong>0757805430</strong></span></a>
+            <a href="https://wa.me/254757805430" target="_blank" rel="noopener noreferrer"><span class="contact-icon" aria-hidden="true">↗</span><span><small>WhatsApp us</small><strong>Chat with our kitchen</strong></span></a>
+          </div>
+        </div>
+        <div class="contact-details">
+          <div><span class="detail-icon" aria-hidden="true">⌖</span><div><h3>Find us</h3><p>Kenyatta Avenue, Eldoret</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Kenyatta+Avenue+Eldoret" target="_blank" rel="noopener noreferrer">Open in Google Maps <span aria-hidden="true">↗</span></a></div></div>
+          <div><span class="detail-icon" aria-hidden="true">◷</span><div><h3>Opening hours</h3><p>Every day, 10:00 am to 9:00 pm</p></div></div>
+        </div>
+      </div>
+    </section>
+    <section class="section contact-cta"><div class="wrap centered"><p class="eyebrow eyebrow-dark">A warm welcome awaits</p><h2>Good food is on its way.</h2><a class="button button-primary" href="index.html#menu">See the menu <span aria-hidden="true">→</span></a></div></section>
+  </main>
+  <footer class="site-footer"><div class="wrap footer-inner"><a class="brand footer-brand" href="index.html#home"><span class="brand-mark" aria-hidden="true">MP</span><span>Mama Pili’s <strong>Kitchen</strong></span></a><p>Home-style Kenyan food, cooked fresh for pickup or delivery.</p><p class="copyright">© Mama Pili’s Kitchen · Kenyatta Avenue, Eldoret</p></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>
